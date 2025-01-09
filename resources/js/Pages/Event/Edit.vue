@@ -18,34 +18,34 @@ const form = useForm({
   ticket_info:  props.event.ticket_info,
 });
 
-const chooseImage = (ev) => {
-  const file = ev.target.files[0];
+// const chooseImage = (ev) => {
+//   const file = ev.target.files[0];
 
-  const reader = new FileReader();
-  reader.onload = () => {
-    form.image = file;
+//   const reader = new FileReader();
+//   reader.onload = () => {
+//     form.image = file;
 
-    form.image_url = reader.result;
-  };
-  reader.readAsDataURL(file);
-};
+//     form.image_url = reader.result;
+//   };
+//   reader.readAsDataURL(file);
+// };
 
-const getTicketInfo = () => {
-  return form.ticket_info;
-};
+// const getTicketInfo = () => {
+//   return form.ticket_info;
+// };
 
-const setTicketInfo = (category) => {
-  form.ticket_info = category;
-};
+// const setTicketInfo = (category) => {
+//   form.ticket_info = category;
+// };
 
-const addCategory = () => {
-  regularTickets.value = false;
-  setTicketInfo([...getTicketInfo(), { ticket_type: "", ticket_count: "" }]);
-};
+// const addCategory = () => {
+//   regularTickets.value = false;
+//   setTicketInfo([...getTicketInfo(), { ticket_type: "", ticket_count: "" }]);
+// };
 
-const removeCategory = (index) => {
-  getTicketInfo().splice(index, 1);
-};
+// const removeCategory = (index) => {
+//   getTicketInfo().splice(index, 1);
+// };
 </script>
 <template>
   <AuthenticatedLayout>
@@ -107,6 +107,29 @@ const removeCategory = (index) => {
             v-model="form.registration_expires_at"
           />
         </div>
+        <div class="mt-4">
+            <button
+              type="button"
+              class="flex ms-2 text-sm text-gray-200 bg-gray-400 p-2 rounded"
+              @click="addCategory"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 4.5v15m7.5-7.5h-15"
+                />
+              </svg>
+              add ticket information
+            </button>
+          </div>
         <div v-if="form.ticket_types" class="py-6 px-6">
           <span v-if="form.total_ticket != null" class="font-bold">Ticket Types</span>
           <div v-for="(option, index) in form.ticket_types" class="mt-4">

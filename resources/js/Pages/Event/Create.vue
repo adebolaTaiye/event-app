@@ -142,47 +142,35 @@ const submit = () => {
 
           <InputError class="mt-2" :message="form.errors.registration_expires_at" />
         </div>
-          <!-- <div class="mt-4">
+        <!-- <div class="mt-4">
             <Checkbox @click="regularTickets = !regularTickets" />
             <span class="ms-2 text-sm text-gray-600 dark:text-gray-400"
               >add ticket number to the event</span
             >
           </div> -->
-          <div class="mt-4">
-            <button
-              type="button"
-              class="flex ms-2 text-sm text-gray-200 bg-gray-400 p-2 rounded"
-              @click="addCategory"
+        <div class="mt-4">
+          <button
+            type="button"
+            class="flex ms-2 text-sm text-gray-200 bg-gray-400 p-2 rounded"
+            @click="addCategory"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-4 h-4"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-4 h-4"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
-              add ticket information
-            </button>
-          </div>
-        <!-- <div class="mt-4" v-if="regularTickets">
-          <InputLabel for="total tickets" value="total tickets" />
-
-          <TextInput
-            id="total tickets"
-            type="number"
-            class="mt-1 block w-full"
-            v-model="form.total_ticket"
-            required
-          />
-          <InputError class="mt-2" :message="form.errors.total_ticket" />
-        </div> -->
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
+            add ticket information
+          </button>
+        </div>
         <div v-for="(option, index) in form.ticket_info" class="mt-4">
           <h3 class="text-lg font-bold">{{ index + 1 }}</h3>
           <TextInput

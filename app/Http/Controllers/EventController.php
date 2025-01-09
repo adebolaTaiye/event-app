@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\TicketTypes;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Illuminate\Support\Arr;
 use Spatie\Image\Image;
 use Illuminate\Support\Facades\Validator;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -30,7 +31,6 @@ class EventController extends Controller
         ->paginate(6)
         ->appends(request()->query());
 
-       // $event = Event::where('user_id',Auth::user()->id)->orderBy('updated_at','desc')->paginate(6)->withQueryString();
         return Inertia::render('Event/Index',[
             'events' => $event
             ]);
@@ -114,19 +114,86 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        return Inertia::render('Event/Create',[
-            'event' => $event->with(['ticketTypes'])->get()
+        $event = Event::with(['ticketTypes'])->findOrFail($id);
+        return Inertia::render('Event/Edit',[
+            'event' => $event
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEventRequest $request)
+    public function update(UpdateEventRequest $request,Event $event)
     {
         $data = $request->validated();
 
         $data['available_ticket'] = $data['total_ticket'];
+
+        if(isset($data['image'])){
+            $file = $data['image'];
+
+            $path = $file->store('event_images','public');
+
+            $data['image'] = $path;
+
+        if($event->image){
+            Storage::disk('public')->delete($event->image);
+          //  $absolutePath = public_path($event->image);
+           // Storage::delete($absolutePath);
+        }
+
+        }
+
+        if(isset($data['ticket_info'])){
+            $totalTicket = array_reduce($data['ticket_info'],function($carry,$item) {
+                return $carry + $item['ticket_count'];
+            },0);
+
+            $data['total_ticket'] = $totalTicket;
+            $data['available_ticket'] = $data['total_ticket'];
+        }
+
+        $event->update($data);
+
+        $existingIds = $event->ticketTypes()->pluck('id')->toArray();
+        $newIds = Arr::pluck($data['ticket_info'],'id');
+        $toDelete = array_diff($existingIds, $newIds);
+        $toAdd = array_diff( $newIds,$existingIds);
+        TicketTypes::destroy($toDelete);
+        foreach ($data['ticket_info'] as $ticketType) {
+            if(in_array($data['ticket_info'], $toAdd)){
+              $ticketType['event_id'] = $event->id;
+              $this->storeTicketTypes($ticketType);
+            }
+          }
+
+          $ticketMap = collect($data['ticket_info'])->keyBy('id');
+          foreach ($event->ticketTypes as $ticketType) {
+              if (isset($ticketMap[$ticketType->id])) {
+                  $this->updateTicketTypes($ticketType, $ticketMap[$ticketType->id]);
+              }
+          }
+          return redirect()->route('dashboard')->with('message','event updated successfully');
+    }
+
+    private function updateTicketTypes(TicketTypes $ticketTypes, $data)
+    {
+
+        $data['ticket_available'] = $data['ticket_count'];
+
+        $validator = Validator::make($data, [
+            'id' => 'exists:App\Models\TicketTypes,id',
+            'ticket_type' => 'required|string',
+            'ticket_count' => 'required|int',
+            'ticket_available' => 'present'
+        ]);
+
+        if ($validator->fails()) {
+            throw new \Illuminate\Validation\ValidationException($validator);
+        }
+
+       $ticketTypes->update($validator->validated());
+
     }
 
     /**
@@ -134,7 +201,17 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        //
+
+        $event->delete();
+
+        if($event->image){
+
+            Storage::disk('public')->delete($event->image);
+           // $absolutePath = public_path($event->image);
+            //Storage::delete($absolutePath);
+        }
+
+        return redirect()->route('dashboard')->with('message','event deleted successfully');
     }
 
 }

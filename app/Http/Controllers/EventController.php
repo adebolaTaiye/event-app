@@ -112,7 +112,7 @@ class EventController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Event $event)
+    public function edit(string $id)
     {
         $event = Event::with(['ticketTypes'])->findOrFail($id);
         return Inertia::render('Event/Edit',[

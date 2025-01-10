@@ -1,7 +1,8 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Link } from '@inertiajs/vue3'
-//import EventListItem from "@/Components/EventListItem.vue";
+import { router } from "@inertiajs/vue3";
+
 
 defineProps({ events: Array });
 
@@ -11,6 +12,12 @@ function truncateDescription(description) {
     return words.slice(0, 10).join(' ') + '...';
   }
   return description;
+}
+
+const deleteEvent = (id) => {
+    if(confirm('are you sure yo want to delete this event')){
+        router.delete(`/event/${id}`)
+    }
 }
 
 </script>
@@ -36,7 +43,7 @@ function truncateDescription(description) {
             <p>{{ truncateDescription(event.description) }}</p>
             <div class="card-actions justify-end">
                 <button
-            class=" btn btn-error text-white"
+            class=" btn btn-error text-white" @click="deleteEvent(event.id)"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +61,7 @@ function truncateDescription(description) {
             </svg>
             Delete
           </button>
-            <button class="btn btn-success text-white">Edit</button>
+            <Link :href="route('event.edit',event.id)" class="btn btn-success text-white">Edit</Link>
               <Link :href="route('event.show',event.id)" class="btn btn-primary text-white" as="button">Show</Link>
             </div>
           </div>

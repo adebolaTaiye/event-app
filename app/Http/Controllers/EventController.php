@@ -74,9 +74,9 @@ class EventController extends Controller
 
         if(isset($data['ticket_info'])){
             foreach ($data['ticket_info'] as $ticketType) {
-              //  dd($ticketType);
                 $ticketType['event_id'] = $event->id;
                 $this->storeTicketTypes($ticketType);
+
             }
         }
 

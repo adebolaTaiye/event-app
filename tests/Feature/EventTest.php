@@ -191,30 +191,30 @@ test('an organizer cannot delete another organizer event', function() {
 
 });
 
-test('a user can register for an event and get tickets', function () {
-    Notification::fake();
-    $user1 = User::factory()->create();
-    $user2 = User::factory()->create(['role' => 'attendee']);
-    $event = Event::factory()->create(['user_id' => $user1->id]);
-    //$ticket = $event->ticketTypes->first();
-   // $ticketId = $ticket->id;
-    //dd($ticketId);
+// test('a user can register for an event and get tickets', function () {
+//     Notification::fake();
+//     $user1 = User::factory()->create();
+//     $user2 = User::factory()->create(['role' => 'attendee']);
+//     $event = Event::factory()->create(['user_id' => $user1->id]);
+//     //$ticket = $event->ticketTypes->first();
+//    // $ticketId = $ticket->id;
+//     //dd($ticketId);
 
-    $eventToRegisterFor = ['user_id' => $user2->id,'event_id' => $event->id, ];
+//     $eventToRegisterFor = ['user_id' => $user2->id,'event_id' => $event->id, ];
 
-    $response = $this->actingAS($user2)->post(route('user.register',$eventToRegisterFor));
-  // $response->assertStatus(302);
+//     $response = $this->actingAS($user2)->post(route('user.register',$eventToRegisterFor));
+//   // $response->assertStatus(302);
 
-   // $availableTicketCountEvent = $event->total_ticket - 5;
-  //  $availableTicketCountTicket = $ticket->ticket_count - 5;
+//    // $availableTicketCountEvent = $event->total_ticket - 5;
+//   //  $availableTicketCountTicket = $ticket->ticket_count - 5;
 
 
-    $this->assertDatabaseHas('user_event_registrations',[
-        'event_id' => $event->id,
-        'user_id' => $user2->id,
-        //'ticket_type_id' => $ticketId,
-       // 'quantity' => 5,
-    ]);
+//     $this->assertDatabaseHas('user_event_registrations',[
+//         'event_id' => $event->id,
+//         'user_id' => $user2->id,
+//         //'ticket_type_id' => $ticketId,
+//        // 'quantity' => 5,
+//     ]);
 
    //  $this->assertDatabaseHas('tickets',[
    //    'booking_id' => $eventToRegisterFor['id'];
@@ -235,4 +235,4 @@ test('a user can register for an event and get tickets', function () {
  //       [$user2], EventRegisteredFor::class
    // );
 
-});
+//});

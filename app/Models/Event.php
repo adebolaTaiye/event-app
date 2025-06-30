@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Event extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'name',
@@ -19,14 +20,12 @@ class Event extends Model
         'registration_expires_at'
     ];
 
-    protected function image(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => env('APP_URL').Storage::url($value)
-        );
-    }
 
     public function ticketTypes(){
         return $this->hasMany(TicketTypes::class,'event_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id');
     }
 }

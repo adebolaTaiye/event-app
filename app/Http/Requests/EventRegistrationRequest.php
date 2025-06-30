@@ -41,7 +41,8 @@ class EventRegistrationRequest extends FormRequest
             'available_ticket' => 'nullable|int',
             'date' =>'required|date|after:tomorrow',
             'registration_expires_at' => 'required|date|before_or_equal:date|after:tomorrow',
-            'ticket_info' => 'nullable|array'
+            'ticket_info' => 'nullable|array',
+           
         ];
     }
 }

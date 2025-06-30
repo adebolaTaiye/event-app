@@ -29,23 +29,27 @@ class EventPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role == 'organizer';
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Event $event): bool
+    public function update(User $user, Event $event): Response
     {
-        return $user->id === $event->id;
+        return $user->id === $event->user_id
+                   ? Response::allow()
+                   : Response::denyAsNotFound();
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Event $event): bool
+    public function delete(User $user, Event $event): Response
     {
-        return $user->id === $event->id;
+        return $user->id === $event->user_id
+                    ? Response::allow()
+                    : Response::denyAsNotFound();
     }
 
     /**

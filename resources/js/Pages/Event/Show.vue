@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import TextAreaInput from "@/Components/TextAreaInput.vue";
-import { Link } from "@inertiajs/vue3";
+//import { Link } from "@inertiajs/vue3";
 
 defineProps({ event: Object });
 
@@ -18,6 +18,7 @@ defineProps({ event: Object });
     <div class="py-12 px-12">
       <form @submit.prevent="submit">
         <div>
+
           <InputLabel for="name" value="name" />
 
           <TextInput
@@ -58,7 +59,6 @@ defineProps({ event: Object });
             readonly
           />
         </div>
-
         <div class="mt-4">
           <InputLabel
             for="registration expiration date"
@@ -91,6 +91,15 @@ defineProps({ event: Object });
               type="number"
               class="mt-1 block w-full"
               v-model="option.ticket_count"
+              placeholder="ticket number"
+              readonly
+            />
+
+            <TextInput
+              id="ticket_count"
+              type="number"
+              class="mt-1 block w-full"
+              v-model="option.ticket_price"
               placeholder="ticket number"
               readonly
             />

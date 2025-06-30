@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(\App\Models\Event::class,'event_id');
             $table->string('ticket_type')->nullable();
-            $table->integer('ticket_count')->nullable();
-            $table->integer('ticket_available')->nullable();
+            $table->unsignedBigInteger('ticket_count')->nullable();
+            $table->unsignedBigInteger('ticket_available')->nullable();
+            $table->decimal('ticket_price',19,2)->nullable();
             $table->timestamps();
         });
     }

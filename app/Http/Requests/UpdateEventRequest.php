@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 
 class UpdateEventRequest extends FormRequest
 {
@@ -22,7 +23,6 @@ class UpdateEventRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'exists:users,id',
             'name' => 'nullable|string|max:100',
             'description' => 'nullable|string',
             'image' => ['nullable', File::image()->min('1kb')->max('10mb') ],

@@ -4,7 +4,6 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import TextAreaInput from "@/Components/TextAreaInput.vue";
-import Checkbox from "@/Components/Checkbox.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
 
@@ -42,8 +41,8 @@ const setTicketInfo = (category) => {
 };
 
 const addCategory = () => {
-  regularTickets.value = false;
-  setTicketInfo([...getTicketInfo(), { ticket_type: "", ticket_count: "" }]);
+  regularTickets.value = true;
+  setTicketInfo([...getTicketInfo(), { ticket_type: "", ticket_count: "",ticket_price:null }]);
 };
 
 const removeCategory = (index) => {
@@ -64,7 +63,6 @@ const submit = () => {
         Add Event
       </h2>
     </template>
-
     <div class="py-12 px-12">
       <form @submit.prevent="submit">
         <div>
@@ -142,12 +140,6 @@ const submit = () => {
 
           <InputError class="mt-2" :message="form.errors.registration_expires_at" />
         </div>
-        <!-- <div class="mt-4">
-            <Checkbox @click="regularTickets = !regularTickets" />
-            <span class="ms-2 text-sm text-gray-600 dark:text-gray-400"
-              >add ticket number to the event</span
-            >
-          </div> -->
         <div class="mt-4">
           <button
             type="button"
@@ -188,6 +180,14 @@ const submit = () => {
             class="mt-1 block w-full"
             v-model="option.ticket_count"
             placeholder="ticket number"
+            required
+          />
+          <TextInput
+            id="ticket_count"
+            type="number"
+            class="mt-1 block w-full"
+            v-model="option.ticket_price"
+            placeholder="ticket price"
             required
           />
           <button

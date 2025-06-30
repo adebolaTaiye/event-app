@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('image',255)->nullable();
-            $table->integer('total_ticket')->nullable();
-            $table->integer('available_ticket')->nullable();
+            $table->unsignedBigInteger('total_ticket')->nullable();
+            $table->unsignedBigInteger('available_ticket')->nullable();
             $table->timestamp('date')->nullable();
             $table->timestamp('registration_expires_at')->nullable();
             $table->timestamps();
